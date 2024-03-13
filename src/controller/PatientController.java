@@ -1,53 +1,72 @@
 package controller;
+import java.util.ArrayList;
+
+import javax.xml.soap.Text;
+
+import Data.DataHandler;
 import classes.Patient;
-import classes.PatientList;
-import utils.EasyScanner;
+import utils.TextColor;
 
 public class PatientController {
-    public static PatientList patientList = new PatientList();
-    static String format = "%-5s %-20s %-30s %n";
+    private static ArrayList <Patient> patientList = new ArrayList<Patient>();
+    private static String filename = "patients.dat";
 
+    // to add patient in list of patients
+    public void addPatient(Patient patient) {
+        patientList.add(patient);
+    }
 
-    // created a method to add patient
-    public static void addPatient() {
-        try{
-            
-         System.out.println("Enter Patient's ID: ");
-         int id = EasyScanner.nextInt();
-         EasyScanner.nextString();
-         System.out.println("Enter Patient's Name: ");  
-         String name = EasyScanner.nextString();
-         System.out.println("Enter Patient's contact number: ");
-         String contact = EasyScanner.nextString();
-         Patient patient = new Patient(id, name, contact);
-         patientList.addPatient(patient);
-         System.out.println("Patient added successfully!");
-         System.out.println("===================================");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+    // to delete patient from list of patients
+    public void deletePatient(int id) {
+        for (Patient patient : patientList) {
+            if (patient.getid() == id) {
+                patientList.remove(patient);
+                System.out.println(TextColor.GREEN+"Patient deleted successfully!"+TextColor.RESET);
+                return;
+            }
+        }
+        System.out.println(TextColor.GREEN+"Patient not found!"+TextColor.RESET);
+       }
+
+    // to get patient from list of patients 
+    public Patient getPatient(int id) {
+        for (Patient patient : patientList) {
+            if (patient.getid() == id) {
+                return patient;
+            }
+        }
+        throw new IllegalArgumentException(TextColor.GREEN+"Patient not found!"+TextColor.RESET);
+    }
+
+    // to list all patients
+    public void listPatient() {
+        for (Patient patient : patientList) {
+            System.out.println(TextColor.CYAN+patient+TextColor.RESET);
         }
     }
 
-    // created a method to delete patient
-    public static void deletePatient() {
-        System.out.println("Enter Patient's ID to delete: ");
-        int id = EasyScanner.nextInt();
-        patientList.deletePatient(id);
+    // to check list of patients is empty or not
+    public boolean isEmpty() {
+        return patientList.isEmpty();
     }
 
-    // created a method to list patient
-    public static void listPatient() {
-        if(patientList.isEmpty()){
-            System.out.println("No patient found!");
-            return;
-        }else{
-            System.out.println("========== List of Patients =========================");
-            System.out.println(String.format(format, "ID", "Name", "Specialization"));
-            patientList.listPatient();
-            System.out.println("=======================================");
-
+    public String getPatientName(int patientId) {
+        for (Patient patient : patientList) {
+            if (patient.getid() == patientId) {
+                return patient.getname();
+            }
         }
+        throw new IllegalArgumentException(TextColor.GREEN+"Patient not found!"+TextColor.RESET);
     }
 
-    
+    //created to save patientList to local file 
+    public void saveData(){
+        DataHandler.saveData(patientList, filename);
+    }
+
+    // Created to load data from local file
+    public void loadData(){
+        patientList = DataHandler.getData(filename);
+    }
+
 }

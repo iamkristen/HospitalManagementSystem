@@ -1,13 +1,12 @@
 package classes;
-import controller.DoctorController;
-import controller.PatientController;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.io.Serializable;
+import CLI.DoctorInterface;
+import CLI.PatientInterface;
 
-public class Appointment {
+public class Appointment implements Serializable {
     
     int id;
-    static LocalTime localTime;
+    String time;
     int doctorId;
     int patientId;
     String doctorName;
@@ -19,8 +18,9 @@ public class Appointment {
         this.id = id;
         this.doctorId = doctorid;
         this.patientId = patientid;
-        setTime(time);
+        this.time = time;
     }
+
 
 
     public String getDoctorName() {
@@ -34,21 +34,17 @@ public class Appointment {
     //setting doctor name from doctor id
     public void setDoctorName(String doctorName) {
         
-        this.doctorName = DoctorController.doctorList.getDoctorName(doctorId);
+        this.doctorName = DoctorInterface.doctorList.getDoctorName(doctorId);
     }
 
     //setting patient name from patient id
     public void setPatientName(String PatientName) {
        
-        this.PatientName = PatientController.patientList.getPatientName(patientId);
+        this.PatientName = PatientInterface.patientList.getPatientName(patientId);
     }
 
     public int getid() {
         return id;
-    }
-
-    public LocalTime gettime() {
-        return localTime;
     }
 
     public int getdoctorId() {
@@ -59,16 +55,12 @@ public class Appointment {
         return patientId;
     }
 
-    public static void setTime(String time){
-        try{
-            localTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm"));
-        }catch (Exception e){
-            throw new IllegalArgumentException("Invalid time format (HH:mm)");
-        }
+    public String gettime() {
+        return time;
     }
 
     @Override
     public String toString() {
-        return String.format("%-5s %-20s %-20s %-20s %n", id, localTime, doctorName, PatientName);
+        return String.format("%-5s %-20s %-20s %-20s %n", id, time, doctorName, PatientName);
     }
 }

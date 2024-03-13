@@ -1,58 +1,76 @@
 package controller;
+import java.util.ArrayList;
 
+import Data.DataHandler;
 import classes.Treatment;
-import classes.TreatmentList;
-import utils.EasyScanner;
+import utils.TextColor;
 
 public class TreatmentController {
-    public static TreatmentList treatmentList = new TreatmentList();
+    private static ArrayList <Treatment> treatmentList = new ArrayList<Treatment>();
+    private static String filename = "treatments.dat";
     static String format = "%-5s %-20s %-30s %n";
 
-    // created a method to add treatment
-    public static void addTreatment() {
-        System.out.println("Enter Treatment ID: ");
-        int id = EasyScanner.nextInt();
-        EasyScanner.nextString();
-        System.out.println("Enter Patient ID: ");
-        int patientId = EasyScanner.nextInt();
-        EasyScanner.nextString();
-        System.out.println("Enter Treatment: ");
-        String treatmentDetails = EasyScanner.nextString();
-        Treatment treatment = new Treatment(id, patientId, treatmentDetails);
-        treatmentList.addTreatment(treatment);
-        System.out.println("Treatment added successfully!");
-        System.out.println("===================================");
+
+    // to add treatment in list of treatment
+    public void addTreatment(Treatment treatment) {
+        treatmentList.add(treatment);
     }
 
-    // created a method to delete treatment
-    public void deleteTreatment() {
-        System.out.println("Enter Treatment ID to delete: ");
-        int id = EasyScanner.nextInt();
-        treatmentList.deleteTreatment(id);
+    // to delete treatment from list of treatment   
+    public void deleteTreatment(int id) {
+        for (Treatment treatment : treatmentList) {
+            if (treatment.getTreatmentid() == id) {
+                treatmentList.remove(treatment);
+                System.out.println(TextColor.GREEN+"Treatment deleted successfully!"+TextColor.RESET);
+                return;
+            }
+        }
+        System.out.println(TextColor.RED+"Treatment not found!"+TextColor.RESET);
     }
 
-    // created a method to list treatment
+    // to list all treatment
     public void listTreatment() {
-        if (treatmentList.isEmpty()) {
-            System.out.println("No treatment found!");
-            return;
-        } else {
-            System.out.println("========== List of Treaments =========================");
-            System.out.println(String.format(format, "ID", "Name", "Specialization"));
-            treatmentList.listTreatment();
+        for (Treatment treatment : treatmentList) {
+            
+            System.out.println(treatment);
         }
     }
 
-    // created a method to check treatment by patient id
-    public static void checkTreatment() {
-        System.out.println("Enter Patient's ID to check treatment: ");
-        int patientId = EasyScanner.nextInt();
-        if (treatmentList.isEmpty()) {
-            System.out.println("No treatment found!");
-            return;
-        } else {
-            treatmentList.checkTreatmentByPatientId(patientId);
+    // to get treatment from list of treatment
+    public Treatment getTreatment(int id) {
+        for (Treatment treatment : treatmentList) {
+            if (treatment.getPatientid() == id) {
+                return treatment;
+            }
+        }
+        throw new IllegalArgumentException(TextColor.RED+"Treatment not found!"+TextColor.RESET);
+    }
+
+    //to check treatment by patient id
+    public void checkTreatmentByPatientId(int patientId) {
+        for (Treatment treatment : treatmentList) {
+            if (treatment.getPatientid() == patientId) {
+                System.out.println(TextColor.YELLOW+"========== List of Treatments ========================="+TextColor.RESET);
+                System.out.println(String.format(format, "ID", "Name", "Treatment Details"));
+                System.out.println(TextColor.CYAN+treatment+TextColor.RESET);
+            }
         }
     }
+
+    // to check list of treatment is empty or not
+    public boolean isEmpty() {
+        return treatmentList.isEmpty();
+    }
+
+    //created to save treatmentList to local file 
+    public void saveData(){
+        DataHandler.saveData(treatmentList, filename);
+    }
+
+    // Created to load data from local file
+    public void loadData(){
+        treatmentList = DataHandler.getData(filename);
+    }
+
     
 }

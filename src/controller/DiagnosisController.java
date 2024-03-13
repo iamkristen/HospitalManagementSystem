@@ -1,55 +1,77 @@
 package controller;
 
+import java.util.ArrayList;
+
+import Data.DataHandler;
 import classes.Diagnosis;
-import classes.DiagnosisList;
-import utils.EasyScanner;
+import utils.TextColor;
 
 public class DiagnosisController {
-    
-    public static DiagnosisList diagnosisList = new DiagnosisList();
+    private static ArrayList <Diagnosis> diagnosisList = new ArrayList<Diagnosis>();
+    private static String filename = "diagnosis.dat";
 
-    // created a method to add diagnosis
-    public static void addDiagnosis() {
-        System.out.println("Enter Diagnosis ID: ");
-        int id = EasyScanner.nextInt();
-        EasyScanner.nextString();
-        System.out.println("Enter Patient ID: ");
-        int patientId = EasyScanner.nextInt();
-        EasyScanner.nextString();
-        System.out.println("Enter Diagnosis: ");
-        String diagnosis_detail = EasyScanner.nextString();
-        Diagnosis diagnosis = new Diagnosis(id, patientId, diagnosis_detail);
-        diagnosisList.addDiagnosis(diagnosis);
-        System.out.println("Diagnosis added successfully!");
-        System.out.println("===================================");
+    // to add diagnosis in list of diagnosis
+    public void addDiagnosis(Diagnosis diagnosis) {
+        diagnosisList.add(diagnosis);
     }
 
-    // created a method to delete diagnosis
-    public void deleteDiagnosis() {
-        System.out.println("Enter Diagnosis ID to delete: ");
-        int id = EasyScanner.nextInt();
-        diagnosisList.deleteDiagnosis(id);
+    // to delete diagnosis from list of diagnosis  
+    public void deleteDiagnosis(int id) {
+        for (Diagnosis diagnosis : diagnosisList) {
+            if (diagnosis.getDiagnosis_id() == id) {
+                diagnosisList.remove(diagnosis);
+                System.out.println(TextColor.GREEN+"Diagnosis deleted successfully!"+TextColor.RESET);
+                return;
+            }
+        }
+        System.out.println(TextColor.RED+"Diagnosis not found!"+TextColor.RESET);
     }
 
-    // created a method to list diagnosis
+    // to list all diagnosis
     public void listDiagnosis() {
-        if (diagnosisList.isEmpty()) {
-            System.out.println("No diagnosis found!");
-            return;
-        } else {
-            diagnosisList.listDiagnosis();
+        for (Diagnosis diagnosis : diagnosisList) {
+            System.out.println(TextColor.YELLOW+"========== List of Diagnosis ========================="+TextColor.RESET);
+            System.out.println(String.format("%-5s %-20s %-20s %n", "ID", "Patient ID", "Diagnosis"));
+            System.out.println(TextColor.CYAN+diagnosis+TextColor.RESET);
+            System.out.println("===================================");
         }
     }
 
-    // created a method to check diagnosis by patient id
-    public static void checkDiagnosis() {
-        System.out.println("Enter Patient's ID to check diagnosis: ");
-        int patientId = EasyScanner.nextInt();
-        if (diagnosisList.isEmpty()) {
-            System.out.println("No diagnosis found!");
-            return;
-        } else {
-            diagnosisList.checkDiagnosisByPatientId(patientId);
+    //to check diagnosis by patient id
+    public void checkDiagnosisByPatientId(int patientId) {
+        for (Diagnosis diagnosis : diagnosisList) {
+            if (diagnosis.getPatientId() == patientId) {
+                System.out.println(TextColor.YELLOW+"========== List of Diagnosis ========================="+TextColor.RESET);
+                System.out.println(String.format("%-5s %-20s %-20s %n", "ID", "Name", "Diagnosis details"));
+                System.out.println(diagnosis);
+                System.out.println("===================================");
+            }
         }
     }
+
+    // to get diagnosis from list of diagnosis
+    public Diagnosis getDiagnosis(int id) {
+        for (Diagnosis diagnosis : diagnosisList) {
+            if (diagnosis.getPatientId()== id) {
+                return diagnosis;
+            }
+        }
+        throw new IllegalArgumentException(TextColor.RED+"Diagnosis not found!"+TextColor.RESET);
+    }
+
+    // to check list of diagnosis is empty or not
+    public boolean isEmpty() {
+        return diagnosisList.isEmpty();
+    }
+    
+    //created to save diagnosisList to local file 
+    public void saveData(){
+        DataHandler.saveData(diagnosisList, filename);
+    }
+
+    // Created to load data from local file
+    public void loadData(){
+        diagnosisList = DataHandler.getData(filename);
+    }
+
 }

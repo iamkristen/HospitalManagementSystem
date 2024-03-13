@@ -1,51 +1,77 @@
 package controller;
+import java.util.ArrayList;
+
+import Data.DataHandler;
 import classes.Appointment;
-import classes.AppointmentList;
-import utils.EasyScanner;
+import utils.TextColor;
 
 public class AppointmentController {
-    public static AppointmentList appointmentList = new AppointmentList();
+    private static ArrayList <Appointment> appointmentList = new ArrayList<Appointment>();
+    private static String filename = "appointments.dat";
 
-    // create a method to add appointment
-    public static void addAppointment() {
-        try{
-            System.out.println("Enter Appointment's ID: ");
-        int id = EasyScanner.nextInt();
-        EasyScanner.nextString();
-        System.out.println("Enter Appointment's Time: ");
-        String time = EasyScanner.nextString();
-        System.out.println("Enter Doctor's ID: ");
-        int doctorId = EasyScanner.nextInt();
-        System.out.println("Enter Patient's ID: ");
-        int patientId = EasyScanner.nextInt();
-        Appointment appointment = new Appointment(id, time, doctorId, patientId);
-        appointment.setDoctorName(DoctorController.doctorList.getDoctorName(doctorId));
-        appointment.setPatientName(PatientController.patientList.getPatientName(patientId));
-        appointmentList.addAppointment(appointment);
-        System.out.println("Appointment added successfully!");
-        System.out.println("===================================");
+    // to add appointment in list of appointments
+    public void addAppointment(Appointment appointment) {
+        appointmentList.add(appointment);
+    }
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+    // to delete appointment from list of appointments
+    public void deleteAppointment(int id) {
+        for (Appointment appointment : appointmentList) {
+            if (appointment.getid() == id) {
+                appointmentList.remove(appointment);
+                System.out.println(TextColor.GREEN+"Appointment deleted successfully!"+TextColor.RESET);
+                return;
+            }
+        }
+        System.out.println(TextColor.RED+TextColor.RED+"Appointment not found!"+TextColor.RESET+TextColor.RESET);
+    }
+
+    // to list all appointments
+    public void listAppointment() {
+        for (Appointment appointment : appointmentList) {
+
+            System.out.println(appointment);
         }
     }
 
-    // create a method to delete appointment
-    public static void deleteAppointment() {
-        System.out.println("Enter Appointment's ID to delete: ");
-        int id = EasyScanner.nextInt();
-        appointmentList.deleteAppointment(id);
+    // to get appointment from list of appointments
+    public Appointment getAppointment(int id) {
+        for (Appointment appointment : appointmentList) {
+            if (appointment.getpatientId() == id) {
+                return appointment;
+            }
+        }
+        throw new IllegalArgumentException(TextColor.RED+"Appointment not found!"+TextColor.RESET);
     }
 
-    // create a method to list appointment
-    public static void checkAppointment() {
-        System.out.println("Enter Patient's ID to check appointment: ");
-        int patientId = EasyScanner.nextInt();
-        if (appointmentList.isEmpty()) {
-            System.out.println("No appointment found!");
-            return;
-        } else {
-            appointmentList.checkAppointmentByPatientId(patientId);
+    //to check appointment by patient id
+    public void checkAppointmentByPatientId(int patientId) {
+        for (Appointment appointment : appointmentList) {
+            if (appointment.getpatientId() == patientId) {
+                System.out.println(TextColor.YELLOW+"========== List of Appointments ========================="+TextColor.RESET);
+                System.out.println(String.format("%-5s %-20s %-20s %-20s %n", "ID", "Time", "Doctor Name", "Patient Name"));
+                System.out.println(TextColor.CYAN+appointment+TextColor.RESET);
+                System.out.println("===================================");
+            }else{
+                System.out.println(TextColor.RED+"No appointment found!"+TextColor.RESET);
+                System.out.println("===================================");
+            }
         }
     }
+
+    // to check list of appointments is empty or not
+    public boolean isEmpty() {
+        return appointmentList.isEmpty();
+    }
+
+    //created to save appointmentList to local file 
+    public void saveData(){
+        DataHandler.saveData(appointmentList, filename);
+    }
+
+    // Created to load data from local file
+    public void loadData(){
+        appointmentList = DataHandler.getData(filename);
+    }
+
 }

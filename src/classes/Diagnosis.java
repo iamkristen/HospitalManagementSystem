@@ -1,7 +1,13 @@
 package classes;
-public class Diagnosis {
+
+import java.io.Serializable;
+
+import CLI.PatientInterface;
+
+public class Diagnosis implements Serializable{
     int diagnosis_id;
     int patientId;
+    String patientName;
     String diagnosis;
 public Diagnosis(int diagnosis_id, int patient_id, String diagnosis) {
         this.diagnosis_id = diagnosis_id;
@@ -21,8 +27,12 @@ public Diagnosis(int diagnosis_id, int patient_id, String diagnosis) {
         return diagnosis;
     }   
 
+    public void setPatientName(int id) {
+        this.patientName = PatientInterface.patientList.getPatientName(id);
+    }
+
     @Override
     public String toString() {
-        return String.format("%-5s  %-20s  %-30s %n", diagnosis_id, patientId, diagnosis);
+        return String.format("%-5s  %-20s  %-30s %n", diagnosis_id, patientName, diagnosis);
     }
 }

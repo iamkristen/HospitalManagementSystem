@@ -1,10 +1,11 @@
 package classes;
-import controller.AppointmentController;
-import controller.DiagnosisController;
-import controller.DoctorController;
-import controller.PatientController;
-import controller.TreatmentController;
+import CLI.AppointmentInterfacce;
+import CLI.DiagnosisInterface;
+import CLI.DoctorInterface;
+import CLI.PatientInterface;
+import CLI.TreatmentInterface;
 import utils.EasyScanner;
+import utils.TextColor;
 
 public class ReportGenerator {
     int reportId;
@@ -22,10 +23,10 @@ public ReportGenerator(int reportId, int patientId) {
     // Formatting the report in a readable format and printing the report
     public static void generateReport(Appointment appointment, Patient patient, Doctor doctor, Diagnosis diagnosis, Treatment treatment) {
         // Print report header
-        System.out.println("-------------- Final Report --------------");
+        System.out.println(TextColor.PURPLE+"-------------- Final Report --------------"+TextColor.RESET);
         
         // Print appointment details
-        System.out.println("Appointment ID: " + appointment.getid());
+        System.out.println(TextColor.CYAN+"Appointment ID: " + appointment.getid());
         System.out.println("Time: " + appointment.gettime());
         
         // Print patient details
@@ -44,21 +45,21 @@ public ReportGenerator(int reportId, int patientId) {
         
         // Print treatment details
         System.out.println("\nTreatment ID: " + treatment.getTreatmentid());
-        System.out.println("Treatment: " + treatment.getTreatment());
+        System.out.println("Treatment: " + treatment.getTreatment()+TextColor.RESET);
         
         // Print report footer
-        System.out.println("\n-------------- End of Report --------------");
+        System.out.println(TextColor.PURPLE+"\n-------------- End of Report --------------"+TextColor.RESET);
     }
 
     public static void getReport() {
         try{
             System.out.println("Enter the patient ID to generate the report: ");
             int patientId = EasyScanner.nextInt();
-            Patient patient = PatientController.patientList.getPatient(patientId); 
-            Appointment appointment = AppointmentController.appointmentList.getAppointment(patientId);
-            Doctor doctor = DoctorController.doctorList.getDoctor(appointment.getdoctorId());
-            Diagnosis diagnosis = DiagnosisController.diagnosisList.getDiagnosis(patientId);
-            Treatment treatment = TreatmentController.treatmentList.getTreatment(patientId);
+            Patient patient = PatientInterface.patientList.getPatient(patientId); 
+            Appointment appointment = AppointmentInterfacce.appointmentList.getAppointment(patientId);
+            Doctor doctor = DoctorInterface.doctorList.getDoctor(appointment.getdoctorId());
+            Diagnosis diagnosis = DiagnosisInterface.diagnosisList.getDiagnosis(patientId);
+            Treatment treatment = TreatmentInterface.treatmentList.getTreatment(patientId);
             generateReport(appointment, patient, doctor, diagnosis, treatment);
         }catch(Exception e){
             System.out.println(e.getMessage());

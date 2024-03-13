@@ -1,44 +1,72 @@
 package controller;
+
+import java.util.ArrayList;
+import Data.DataHandler;
 import classes.Doctor;
-import classes.DoctorList;
-import utils.EasyScanner;
+import utils.TextColor;
 
 public class DoctorController {
-    public static DoctorList doctorList = new DoctorList();
-    static String format = "%-5s %-20s %-30s %n";
-    
-    // create a method to add doctor
-    public static void addDoctor() {
-        System.out.println("Enter Doctor's ID: ");
-        int id = EasyScanner.nextInt();
-        EasyScanner.nextString();
-        System.out.println("Enter Doctor's Name: ");  
-        String name = EasyScanner.nextString();
-        System.out.println("Enter Doctor's Specialization: ");
-        String specialization = EasyScanner.nextString();
-        Doctor doctor = new Doctor(id, name, specialization);
-        doctorList.addDoctor(doctor);
-        System.out.println("Doctor added successfully!");
-        System.out.println("===================================");
+    private static ArrayList <Doctor> doctorList = new ArrayList<Doctor>();
+    private static String filename = "doctors.dat";
+
+    // to add doctor in list of doctors
+    public void addDoctor(Doctor doctor) {
+        doctorList.add(doctor);
     }
 
-    // create a method to delete doctor
-    public static void deleteDoctor() {
-        System.out.println("Enter Doctor's ID to delete: ");
-        int id = EasyScanner.nextInt();
-        doctorList.deleteDoctor(id);
-    }
-
-    // create a method to list doctor
-    public static void listDoctor() {
-        if(doctorList.isEmpty()){
-            System.out.println("No doctor found!");
-            return;
-        }else{
-        System.out.println("========== List of Doctors =========================");
-        System.out.println(String.format(format, "ID", "Name", "Specialization"));
-        doctorList.listDoctor();
-        System.out.println("===================================");
+    // to delete doctor from list of doctors
+    public void deleteDoctor(int id) {
+        for (Doctor doctor : doctorList) {
+            if (doctor.getid() == id) {
+                doctorList.remove(doctor);
+                System.out.println(TextColor.GREEN+"Doctor deleted successfully!"+TextColor.RESET);
+                return;
+            }
         }
+        System.out.println(TextColor.RED+"Doctor not found!"+TextColor.RESET);
+    }
+
+    // to list all doctors
+    public void listDoctor() {
+        for (Doctor doctor : doctorList) {
+            System.out.println(TextColor.CYAN+doctor+TextColor.RESET);
+        }
+    }
+
+    // to check list of doctors is empty or not
+    public boolean isEmpty() {
+        return doctorList.isEmpty();
+    }
+
+    // to get doctor by id
+    public Doctor getDoctor(int id) {
+        for (Doctor doctor : doctorList) {
+            if (doctor.getid() == id) {
+                return doctor;
+            }
+        }
+        throw new IllegalArgumentException(TextColor.RED+"Doctor not found!"+TextColor.RESET);
+    }
+
+    // to get doctor name by id
+    public String getDoctorName(int doctorId) {
+        for (Doctor doctor : doctorList) {
+            if (doctor.getid() == doctorId) {
+                return doctor.getname();
+            }
+        }
+        throw new IllegalArgumentException(TextColor.RED+"Doctor not found!"+TextColor.RESET);
+        // return null;
+    }
+
+    // to Save the Doctor data to the local file
+    public void saveData() {
+        DataHandler.saveData(doctorList, filename);
+    }
+
+    // to load Data from local file 
+    public void loadData() {
+        doctorList = DataHandler.getData(filename);
+        
     }
 }
