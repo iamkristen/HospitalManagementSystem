@@ -1,25 +1,26 @@
 package CLI;
+
+import java.util.Random;
+
 import classes.Doctor;
 import controller.DoctorController;
-import utils.EasyScanner;
-import utils.TextColor;
-import utils.UniqueIdGenerator;
+import helper.EasyScanner;
 
 public class DoctorInterface {
     public static DoctorController doctorList = new DoctorController();
     static String format = "%-5s %-20s %-30s %n";
-    
+
     // create a method to add doctor
     public static void addDoctor() {
-        int id = UniqueIdGenerator.generateUniqueId();
+        int id = generateUniqueId();
         EasyScanner.nextString();
-        System.out.println("Enter Doctor's Name: ");  
+        System.out.println("Enter Doctor's Name: ");
         String name = EasyScanner.nextString();
         System.out.println("Enter Doctor's Specialization: ");
         String specialization = EasyScanner.nextString();
         Doctor doctor = new Doctor(id, name, specialization);
         doctorList.addDoctor(doctor);
-        System.out.println(TextColor.GREEN+"Doctor added successfully!"+TextColor.RESET);
+        System.out.println("\u001B[32m" + "Doctor added successfully!" + "\u001B[0m");
         System.out.println("===================================");
     }
 
@@ -32,14 +33,15 @@ public class DoctorInterface {
 
     // create a method to list doctor
     public static void listDoctor() {
-        if(doctorList.isEmpty()){
-            System.out.println(TextColor.RED+"No doctor found!"+TextColor.RESET);
+        if (doctorList.isEmpty()) {
+            System.out.println("\u001B[31m" + "No doctor found!" + "\u001B[0m");
             return;
-        }else{
-        System.out.println(TextColor.YELLOW+"========== List of Doctors ========================="+TextColor.RESET);
-        System.out.println(String.format(format, "ID", "Name", "Specialization"));
-        doctorList.listDoctor();
-        System.out.println("===================================");
+        } else {
+            System.out.println(
+                    "\u001B[33m" + "========== List of Doctors =========================" + "\u001B[0m");
+            System.out.println(String.format(format, "ID", "Name", "Specialization"));
+            doctorList.listDoctor();
+            System.out.println("===================================");
         }
     }
 
@@ -51,5 +53,10 @@ public class DoctorInterface {
     // create a method to load the Doctor data from the local file
     public static void loadData() {
         doctorList.loadData();
+    }
+
+    public static int generateUniqueId() {
+        Random rand = new Random();
+        return rand.nextInt((999 - 1) + 1) + 1;
     }
 }

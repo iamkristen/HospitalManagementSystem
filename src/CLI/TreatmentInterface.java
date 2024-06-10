@@ -1,10 +1,10 @@
 package CLI;
 
+import java.util.Random;
+
 import classes.Treatment;
 import controller.TreatmentController;
-import utils.EasyScanner;
-import utils.TextColor;
-import utils.UniqueIdGenerator;
+import helper.EasyScanner;
 
 public class TreatmentInterface {
     public static TreatmentController treatmentList = new TreatmentController();
@@ -12,24 +12,22 @@ public class TreatmentInterface {
 
     // created a method to add treatment
     public static void addTreatment() {
-        try{
-        int id = UniqueIdGenerator.generateUniqueId();
-        EasyScanner.nextString();
-        System.out.println("Enter Patient ID: ");
-        int patientId = EasyScanner.nextInt();
-        EasyScanner.nextString();
-        System.out.println("Enter Treatment: ");
-        String treatmentDetails = EasyScanner.nextString();
-        Treatment treatment = new Treatment(id, patientId, treatmentDetails);
-        treatment.setPatientName(patientId);
-        treatmentList.addTreatment(treatment);
-        System.out.println(TextColor.GREEN+"Treatment added successfully!"+TextColor.RESET);
-        System.out.println("===================================");
-    }catch (Exception e) {
-        System.out.println(e.getMessage());
+        try {
+            int id = generateUniqueId();
+            EasyScanner.nextString();
+            System.out.println("Enter Patient ID: ");
+            int patientId = EasyScanner.nextInt();
+            EasyScanner.nextString();
+            System.out.println("Enter Treatment: ");
+            String treatmentDetails = EasyScanner.nextString();
+            Treatment treatment = new Treatment(id, patientId, treatmentDetails);
+            treatmentList.addTreatment(treatment);
+            System.out.println("\u001B[32m" + "Treatment added successfully!" + "\u001B[0m");
+            System.out.println("===================================");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-}
-
 
     // created a method to delete treatment
     public void deleteTreatment() {
@@ -39,9 +37,9 @@ public class TreatmentInterface {
     }
 
     // created a method to list treatment
-    public void listTreatment() {
+    public static void listTreatment() {
         if (treatmentList.isEmpty()) {
-            System.out.println(TextColor.RED+"No treatment found!"+TextColor.RESET);
+            System.out.println("\u001B[31m" + "No treatment found!" + "\u001B[0m");
             return;
         } else {
             System.out.println("========== List of Treaments =========================");
@@ -55,7 +53,7 @@ public class TreatmentInterface {
         System.out.println("Enter Patient's ID to check treatment: ");
         int patientId = EasyScanner.nextInt();
         if (treatmentList.isEmpty()) {
-            System.out.println(TextColor.RED+"No treatment found!"+TextColor.RESET);
+            System.out.println("\u001B[31m" + "No treatment found!" + "\u001B[0m");
             return;
         } else {
             treatmentList.checkTreatmentByPatientId(patientId);
@@ -71,5 +69,9 @@ public class TreatmentInterface {
     public static void loadData() {
         treatmentList.loadData();
     }
-    
+
+    public static int generateUniqueId() {
+        Random rand = new Random();
+        return rand.nextInt((999 - 1) + 1) + 1;
+    }
 }

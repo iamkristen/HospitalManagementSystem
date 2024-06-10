@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import CLI.PatientInterface;
 
-public class Treatment implements Serializable{
+public class Treatment implements Serializable {
     int treatmentid;
     int patientid;
     String treatment;
@@ -14,9 +14,10 @@ public class Treatment implements Serializable{
         this.treatmentid = treatmentid;
         this.patientid = patientid;
         this.treatment = treatment;
+        setPatientName(patientid);
     }
 
-    public int getTreatmentid() {
+    public int getId() {
         return treatmentid;
     }
 
@@ -27,8 +28,13 @@ public class Treatment implements Serializable{
     public String getTreatment() {
         return treatment;
     }
+
     public void setPatientName(int id) {
         this.patientName = PatientInterface.patientList.getPatientName(id);
+    }
+
+    public String getPatientName() {
+        return patientName;
     }
 
     @Override

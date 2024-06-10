@@ -1,7 +1,8 @@
 package classes;
+
 import java.io.Serializable;
 
-public class Doctor implements Serializable{
+public class Doctor implements Serializable {
     int id;
     String name;
     String specialization;
@@ -19,18 +20,17 @@ public class Doctor implements Serializable{
     public String getspecialization() {
         return specialization;
     }
-     public int getid() {
-        return id;
-     }
-     
-     
 
-     @Override
+    public int getid() {
+        return id;
+    }
+
+    @Override
     public String toString() {
         String format = "%-5s  %-20s  %-30s %n";
         // StringBuilder sb = new StringBuilder();
         // sb.append();
         return String.format(format, id, name, specialization);
-        
+
     }
 }

@@ -1,10 +1,12 @@
 package classes;
+
 import java.io.Serializable;
+
 import CLI.DoctorInterface;
 import CLI.PatientInterface;
 
 public class Appointment implements Serializable {
-    
+
     int id;
     String time;
     int doctorId;
@@ -12,16 +14,15 @@ public class Appointment implements Serializable {
     String doctorName;
     String PatientName;
 
-
-    //creating consturctor for appointment class
+    // creating consturctor for appointment class
     public Appointment(int id, String time, int doctorid, int patientid) {
         this.id = id;
         this.doctorId = doctorid;
         this.patientId = patientid;
         this.time = time;
+        setDoctorName();
+        setPatientName();
     }
-
-
 
     public String getDoctorName() {
         return doctorName;
@@ -31,19 +32,18 @@ public class Appointment implements Serializable {
         return PatientName;
     }
 
-    //setting doctor name from doctor id
-    public void setDoctorName(String doctorName) {
-        
+    // setting doctor name from doctor id
+    public void setDoctorName() {
+
         this.doctorName = DoctorInterface.doctorList.getDoctorName(doctorId);
     }
 
-    //setting patient name from patient id
-    public void setPatientName(String PatientName) {
-       
+    // setting patient name from patient id
+    public void setPatientName() {
         this.PatientName = PatientInterface.patientList.getPatientName(patientId);
     }
 
-    public int getid() {
+    public int getId() {
         return id;
     }
 
@@ -55,7 +55,7 @@ public class Appointment implements Serializable {
         return patientId;
     }
 
-    public String gettime() {
+    public String getTime() {
         return time;
     }
 
