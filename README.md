@@ -1,18 +1,30 @@
-## Getting Started
+# University Assignment Software: Hospital Management System
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Overview
+This software project was developed as an assignment for a university course, focusing on building a Hospital Management System. It provides functionality that allows users to interact with it either through a command-line interface (CLI) or a graphical user interface (GUI). The system utilizes file storage to store and load data, as per the assignment requirements.
 
-## Folder Structure
+## Features
+- **CLI Interface**: Users can interact with the software through a command-line interface by running the `mainmenu` file.
+- **GUI Interface**: For those preferring a graphical interface, the software offers a GUI option accessible by running the `mainapp` file. Note that to run the GUI, JavaFX must be installed on your system.
+- **File Storage**: The system utilizes files to store and load data, facilitating the management of hospital-related information.
+- **Functionality**: The software offers various features typical of a Hospital Management System, such as managing patient records, scheduling appointments, diagnosis, generating reports, etc.
 
-The workspace contains two folders by default, where:
+## Usage
+### Command-Line Interface (CLI)
+To use the CLI interface:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+### Graphical User Interface (GUI)
+To use the GUI interface, ensure JavaFX is installed on your system, then run:
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Requirements
+- Java: To run the CLI, you only need Java installed on your system.
+- JavaFX: To run the GUI, you'll need to have JavaFX installed.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## Contributors
+- [Ravi Kushwaha](https://github.com/iamkristen): Project Lead
 
-## Dependency Management
+## License
+[MIT License](LICENSE)
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Note
+Feel free to use this code to understand and learn. This project serves as an educational resource for understanding software development principles and practices, particularly in the context of building a Hospital Management System.
